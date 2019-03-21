@@ -113,7 +113,7 @@ def get_block():
 @app.route('/is_valid', methods = ['GET'])
 def is_valid():
     valid = blockchain.is_valid_chain(blockchain.chain)
-    response = {'valid': valid}
+    response = {'message': "Is blockchain valid: {}".format(valid)}
     return jsonify(response), 200
 
 
