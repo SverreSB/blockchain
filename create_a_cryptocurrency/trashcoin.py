@@ -1,14 +1,20 @@
 import datetime
 import hashlib
 import json
-from flask import Flask, jsonify
-
-#Part 1 - Build a Blockchain
+#Installs: 
+#   pip install Flask==0.12.2
+#   pip install requests==2.18.4 
+from flask import Flask, jsonify, request
+import requests
+from uuid import uuid4
+from urllib.parse import urlparse
+#Part 1 - Build a cryptocurrency
 
 class Blockchain:
     #initialize chain and genisis block
     def __init__(self):
         self.chain = []
+        self.transactions = []
         self.create_block(proof = 1, previous_hash = '0')
         
     #Creates a block with timestamp 
@@ -17,7 +23,9 @@ class Blockchain:
                 'timestamp': str(datetime.datetime.now()),
                 'proof': proof,
                 'hash': '',
-                'previous_hash': previous_hash}
+                'previous_hash': previous_hash,
+                'transactions': self.transactions} 
+        self.transactions = []
         self.chain.append(block)
         
         return block
@@ -71,6 +79,14 @@ class Blockchain:
             block_index += 1
             
         return True
+    
+    def add_transaction(self, sender, receiver, amount):
+        self.transactions.append({'sender': sender,
+                                  'receiver': receiver,
+                                  'amount': amount})
+        
+        previous_block = self.get_previous_block()
+        return previous_block['index'] + 1
         
     
 #Part 2 - mining
