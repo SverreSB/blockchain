@@ -8,7 +8,7 @@ from flask import Flask, jsonify, request
 import requests
 from uuid import uuid4
 from urllib.parse import urlparse
-#Part 1 - Build a cryptocurrency
+#Part 2 - Build a cryptocurrency
 
 class Blockchain:
     #initialize chain and genisis block
@@ -87,6 +87,10 @@ class Blockchain:
         
         previous_block = self.get_previous_block()
         return previous_block['index'] + 1
+    
+    def add_node(self, address):
+        parsed_url = urlparse(address)
+        self.node.add(parsed_url.netloc)
         
     
 #Part 2 - mining
