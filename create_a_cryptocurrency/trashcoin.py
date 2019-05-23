@@ -1,4 +1,4 @@
-import datetime
+aimport datetime
 import hashlib
 import json
 #Installs: 
@@ -90,9 +90,26 @@ class Blockchain:
     
     def add_node(self, address):
         parsed_url = urlparse(address)
-        self.node.add(parsed_url.netloc)
+        self.nodes.add(parsed_url.netloc)
         
-    
+    def replace_chain(self):
+        network = self.nodes
+        longest_chain = None
+        max_length = len(self.chain())
+        
+        for node in network:
+            response = request.get(f'http://{node}/mine_block')
+            if response.status_code = 200:
+                length = response.json()['length']
+                chain = response.json()['chain']
+                if(length > max_length and self.is_valid_chain(chain)):
+                    max_length = length
+                    longest_chain = chain
+            
+        if longest_chain:
+            self.chain = longest_chain
+            return True
+        
 #Part 2 - mining
         
 #Creating a web app
