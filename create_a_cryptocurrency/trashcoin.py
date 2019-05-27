@@ -158,8 +158,8 @@ def is_valid():
     response = {'message': "Is blockchain valid: {}".format(valid)}
     return jsonify(response), 200
 
-#Adding transaction to block
-@app.route('add_transaction', methods = ['POST'])
+#Adding transaction to blockchain
+@app.route('/add_transaction', methods = ['POST'])
 def add_transaction():
     json = request.get_json()
     transaction_keys = ['sender', 'receiver', 'amount']
@@ -167,6 +167,25 @@ def add_transaction():
         return 'Some elements of the transactions are missing'
     index = add_transaction(json['sender'], json['receiver'], json['amount'])
     response = {'message': f'This transaction will be added to Block {index}'}
+    return jsonify(response), 201
+
+#Connecting new node
+@app.route('/connect_node', methods = ['POST'])
+def connect_node():
+    json = request.get_json()
+    nodes = json.get('nodes')
+
+    if nodes is None:
+        return 'No node', 400
+
+    for node in nodes:
+        blockchain.add_node(node)
+    
+    response = {
+        'message': 'All the nodes are connected. The blockchain now contains the following nodes: ',
+        'total_nodes': list(blockchain.nodes)
+    }
+
     return jsonify(response), 201
 
 app.run(host = '0.0.0.0', port = 5000)
