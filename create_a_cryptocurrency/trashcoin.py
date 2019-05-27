@@ -1,4 +1,4 @@
-aimport datetime
+import datetime
 import hashlib
 import json
 #Installs: 
@@ -99,7 +99,7 @@ class Blockchain:
         
         for node in network:
             response = request.get(f'http://{node}/mine_block')
-            if response.status_code = 200:
+            if response.status_code == 200:
                 length = response.json()['length']
                 chain = response.json()['chain']
                 if(length > max_length and self.is_valid_chain(chain)):
@@ -158,5 +158,15 @@ def is_valid():
     response = {'message': "Is blockchain valid: {}".format(valid)}
     return jsonify(response), 200
 
+#Adding transaction to block
+@app.route('add_transaction', methods = ['POST'])
+def add_transaction():
+    json = request.get_json()
+    transaction_keys = ['sender', 'receiver', 'amount']
+    if not all(key in json for key in transaction_keys):
+        return 'Some elements of the transactions are missing'
+    index = add_transaction(json['sender'], json['receiver'], json['amount'])
+    response = {'message': f'This transaction will be added to Block {index}'}
+    return jsonify(response), 201
 
 app.run(host = '0.0.0.0', port = 5000)
