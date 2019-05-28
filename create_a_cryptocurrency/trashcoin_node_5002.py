@@ -132,7 +132,7 @@ def mine_block():
     
     #Finding previous hash, adding transaction and creating new block
     previous_hash = blockchain.hash(previous_block)
-    blockchain.add_transaction(sender = node_address, receiver = 'Sverre', amount = 6)
+    blockchain.add_transaction(sender = node_address, receiver = 'Trygve', amount = 6)
     block = blockchain.create_block(proof, previous_hash)
     
     response = {'message': 'Confirmation: Block successfully mined',
@@ -205,4 +205,4 @@ def replace_chain():
     
     return jsonify(response), 200
 
-app.run(host = '0.0.0.0', port = 5000)
+app.run(host = '0.0.0.0', port = 5002)
